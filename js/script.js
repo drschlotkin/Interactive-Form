@@ -1,7 +1,16 @@
-// Hide/display elements on start up
-$('#name').focus();
-$('#other-title').hide();
+// Hide elements on start up
+$('#colors-js-puns').hide();
+const other = $('#other-title').detach()
 $('p').hide();
+$('#name').focus();
+$('#payment').val('credit card')
+$("#payment option[value='select_method']").attr("disabled", true)
+
+
+// Display 'Job Role: Other' element
+$('#title').on('change',  () => {
+    $('#title').val() === 'other' ? $(other).insertAfter('#title') : $('#other-title').hide();
+})
 
 
 // Variables for registration form
@@ -15,81 +24,55 @@ const build = "input[name='build-tools']";
 const npm = "input[name='npm']";
 
 
-// Display text area if 'other' is selected, and hide it if its not.
-$('#title').on('change',  () => {
-    if ($('#title').val() === 'other'){
-        $('#other-title').show() ;   
-    }else{
-        $('#other-title').hide();
-    };
-});
-
-
 /*===============
 T-Shirt Selection
 =================*/
-$("#design").on('focus change', () => {
 
-    // Remove 'Select Theme' option    
+$("#design").on('change', () => {
+    // Remove 'Select Theme' selection   
     let design = $('#design').find("option").eq(0);
     if (design.val() == 'Select Theme') design.remove();
-
-    //Match T-Shirt color based on design
+    
+    // Match T-Shirt color based on design
     if ($('#design').val() == 'js puns'){
+        $('#colors-js-puns').show();
         $('#color').val('cornflowerblue');
             for (let i = 0; i <=5; i++){
                 (i < 3) ? $(`#color :eq(${i})`).show() : $(`#color :eq(${i})`).hide();
             };
     }else{
+        $('#colors-js-puns').show();
         $('#color').val('tomato');
         for (let i = 0; i <=5; i++){
             (i < 3) ? $(`#color :eq(${i})`).hide() : $(`#color :eq(${i})`).show();
         };
-    };
+    }; 
 });
 
 
 /*=====================
-Activities Registration 
-=======================*/
-$(main).on('click', function() {
-    $(this).is(':checked') ? add(200) : sub(200);
-});
+Activities Registration
+=======================
+DISABLE/ENABLE ACTIVITIES BASED ON THE TIME SLOTS AND CALCULATE TOTAL COST */
 
-$(frameworks).on('click', function() {
-    $(this).is(':checked') ? addCost(express, 100) : subCost(express, 100);
-});
-
-$(libraries).on('click',function() {
-    $(this).is(':checked') ? addCost(node, 100): subCost(node, 100);
-});
-
-$(express).on('click', function() {
-    $(this).is(':checked') ? addCost(frameworks, 100) : subCost(frameworks, 100);
-});
-
-$(node).on('click', function() {
-    $(this).is(':checked') ? addCost(libraries, 100) : subCost(libraries, 100);
-});
-
-$(build).on('click', function() {
-    $(this).is(':checked') ? add(100) : sub(100);
-});
-
-$(npm).on('click', function() {
-    $(this).is(':checked') ? add(100) : sub(100);
-});
+$(main).on('click', () => $(main).is(':checked') ? add(200) : sub(200));
+$(frameworks).on('click', () => $(frameworks).is(':checked') ? addCost(express, 100) : subCost(express, 100));
+$(libraries).on('click', () => $(libraries).is(':checked') ? addCost(node, 100): subCost(node, 100));
+$(express).on('click', () => $(express).is(':checked') ? addCost(frameworks, 100) : subCost(frameworks, 100));
+$(node).on('click', () => $(node).is(':checked') ? addCost(libraries, 100) : subCost(libraries, 100));
+$(build).on('click', () => $(build).is(':checked') ? add(100) : sub(100));
+$(npm).on('click', () => $(npm).is(':checked') ? add(100) : sub(100));
 
 // If activity is 'checked', calculate total cost and disable time conflicting fields
 const addCost = (checkbox, cost) => {
     add(cost);
-    $(checkbox).prop('disabled', true);
+    $(checkbox).prop('disabled', true).css('cursor', 'not-allowed').parent().css('color', 'gray');
 };
 
 // If activity is 'unchecked', subtract from total cost and enable fields
 const subCost = (checkbox, cost) => {
     sub(cost);
-    $(checkbox).prop('disabled', false);
+    $(checkbox).prop('disabled', false).parent().css('color', 'black').css('cursor', 'pointer');
 };
 
 // Addition function
@@ -107,67 +90,130 @@ const sub = (cost) => {
 }
 
 
-/*==========
+/*===========
 Payment Info 
-============*/
-$('#payment').on('focus change', () => {
+=============*/
 
-    // Remove Select Payment option
-    let payment = $('#payment').find("option").eq(0);
-    if (payment.val() == 'select_method') payment.remove();
+$('#payment').on('change', () => {
 
+   
+    // Display payment info based on selection 
     if ($('#payment').val() == 'credit card'){
-        $('p').hide();
-        $('#credit-card').show()
-    }
+        $('#credit-card').show();
+        $('div:last-child p').hide();
+        $('div:nth-last-child(2) p').hide();
+    } 
 
     if ($('#payment').val() == 'paypal') {
-        $('#credit-card').hide()
-        $('p:nth-child(1)').show()
-    }
-
+        $('#credit-card').hide();
+        $('div:last-child p').hide();
+        $('div:nth-last-child(2) p').show();
+    };
+    
     if ($('#payment').val() == 'bitcoin'){
-        $('#credit-card').hide()
-    }
-})
+        $('#credit-card').hide();
+        $('div:nth-last-child(2) p').hide();
+        $('div:last-child p').show();
+    };
+});
 
 
+/*==============
+Register Button 
+================
+CHECK AND HIGHLIGHT ALL REQUIRED FIELDS */
+
+
+// For styling purposes only (horizontal rule above 'Register' Button)
+$('button').wrap("<legend id='btn'></legend>");
 
 
 $('button').on('click', (e) => {
-    e.preventDefault()
-})
 
-
-
-// $('h3').show()
-// $('#total').text(totalCost)
-// $("input[name='js-libs']").prop('disabled', true)
-
-
-// $("#design").on('change', () => {  
-//     if ($('#design').val() == 'js puns'){
-//         $('#color').val('cornflowerblue')
-//         $('#color option[cost=cornflowerblue]').show()
-//         $('#color option[cost=darkslategrey]').show()
-//         $('#color option[cost=gold]').show()
-//         $('#color option[cost=tomato]').hide()
-//         $('#color option[cost=steelblue]').hide()
-//         $('#color option[cost=dimgrey]').hide()
-//     }else{
-//         $('#color').val('tomato')
-//         $('#color option[cost=tomato]').show()
-//         $('#color option[cost=steelblue]').show()
-//         $('#color option[cost=dimgrey]').show()
+    // Name and email input fields
+    if ($('#name').val() == '') {
+        $("#name").addClass('redBorder')
+                .attr('placeholder', 'Please enter a name...')
+                .prev().addClass('redText');
         
-//         $('#color option[cost=cornflowerblue]').hide()
-//         $('#color option[cost=darkslategrey]').hide()
-//         $('#color option[cost=gold]').hide()
-//     }
-// });
-// Highlight input fields if there is data
-// $('fieldset input').blur(function(){
-//     ($(this).val()) ? $(this).css("background-color","#ffffb3") : $(this).css("background-color","#c1deeb")
-// });
+    };
+    if ($('#mail').val() == ''){
+        $("#mail").addClass('redBorder')
+                .attr('placeholder', 'Please enter an email...')
+                .prev().addClass('redText');
+    }; 
+
+    // 'Job Role: other' field
+    if ($('#other-title').is(':not(:hidden)') && $('#other-title').val() == ''){
+        $("#other-title").addClass('redBorder').attr('placeholder', 'Please enter a job role...')
+    }
+
+    $('#other-title').on('change keypress', () => highlight('#other-title'));
 
 
+    // Loop through activities
+    let empty = true
+    $('input[type=checkbox]:checked').each(function () { $(this).is(':checked') ? empty = false : empty = true });
+    
+    if (empty){
+        $('.activities legend').first().addClass('redText').text('Please select at least one activity:')
+    } 
+
+    // Credit card information
+    if ($('#cc-num').val() == '') $("#cc-num").addClass('redBorder').prev().addClass('redText');
+    if ($('#zip').val() == '') $("#zip").addClass('redBorder').prev().addClass('redText');
+    if ($('#cvv').val() == '') $("#cvv").addClass('redBorder').prev().addClass('redText');
+    
+    
+    /*=====================================================================================================================
+    I'M TRYING TO FIGURE OUT HOW TO LOOP THROUGH ALL THE INPUT FIELDS TO MAKE SURE THEY ARE FILLED OUT BEFORE I SUBMIT FORM
+    |                   |               |
+    |                   |               |
+    v                   v               v                                                                                  */
+    
+    $("input").each(function() {
+        
+        if ($(this).val() == ''){
+          
+        }else{
+            e.preventDefault();
+        }
+                 
+    });
+});    
+
+// Reset input fields back to original styling once text is entered
+$('#name').on('change keypress', () => highlight('#name'))
+$('#mail').on('change keypress', () => highlight('#mail'));
+$('.activities').on('change', () => {$('.activities legend').first().removeClass('redText').text('Register for Activities')});
+$('#cc-num').on('change keypress', () => highlight('#cc-num'));
+$('#zip').on('change keypress', () => highlight('#zip'));
+$('#cvv').on('change keypress', () => highlight('#cvv'));
+
+
+const highlight = (field) => {
+    $(field).removeClass('redBorder', 'placeholder').prev().removeClass('redText')
+    if (event.which == 13) $(field).blur()
+}
+
+/*=================================
+CODE THAT WILL PROBABLY GET DELETED
+===================================*/
+
+ // Remove 'Select Payment' option
+    // let payment = $('#payment').find("option").eq(0);
+    // if (payment.val() == 'select_method') payment.remove();
+
+
+// Create error message element if no payment is selected
+// $('<p id="select"></p>').insertBefore('#credit-card');
+
+// If no payment method is selected
+    // if ($('#payment').find("option").eq(0).val() == 'select_method'){
+    //     $('#select').show()
+    //     $('#select').text('Please select a payment method')
+    // }
+// $('#credit-card').hide();
+
+ // Hide error message element
+    // $('#select').hide()
