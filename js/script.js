@@ -15,6 +15,8 @@ $('#other-title').hide()
 $('#name').focus();
 $('#payment').val('credit card');
 $("#payment option[value='select_method']").attr("disabled", true);
+$('div:last-child p').hide();
+$('div:nth-last-child(2) p').hide();
 
 
 // Display 'Job Role: Other' element
@@ -28,7 +30,6 @@ $('#mail').on('keyup', () => {
         $('#mail').prev().text('Email:').css('color', 'black');
     }else{
         $('#mail').prev().text('Please enter a valid email address:').css('color', '#e60000');
-       
     };
 });
 
