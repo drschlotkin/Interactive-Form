@@ -41,11 +41,11 @@ a {
   Form Element Styles
 ==================================== */
 
-.redBorder{
+.redBorder {
 	border: 2px solid red;
 }
 
-.redText{
+.redText {
 	color: #e60000
 }
 
@@ -195,6 +195,7 @@ select {
 .container {
 	margin: auto;
 	max-width: 680px;
+	padding-bottom:20px
 }
 
 .shirt div {
