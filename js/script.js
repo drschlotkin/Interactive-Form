@@ -40,10 +40,6 @@ T-Shirt Selection
 
 $("#design").on('change', () => {
 
-    // Remove 'Select Theme' selection   
-    let design = $('#design').find("option").eq(0);
-    if (design.val() == 'Select Theme') design.remove();
-    
     // Match T-Shirt color based on design
     if ($('#design').val() == 'js puns'){
         $('#colors-js-puns').show();
@@ -51,13 +47,17 @@ $("#design").on('change', () => {
         for (let i = 0; i <=5; i++){
             (i < 3) ? $(`#color :eq(${i})`).show() : $(`#color :eq(${i})`).hide();
         };
+
+    }else if ($('#design').val() == 'Select Theme'){
+        $('#colors-js-puns').hide();
+
     }else{
         $('#colors-js-puns').show();
         $('#color').val('tomato');
         for (let i = 0; i <=5; i++){
             (i < 3) ? $(`#color :eq(${i})`).hide() : $(`#color :eq(${i})`).show();
         };
-    }; 
+    }
 });
 
 
