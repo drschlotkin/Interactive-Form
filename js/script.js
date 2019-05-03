@@ -11,16 +11,12 @@ const npm = "input[name='npm']";
 
 // Hide elements and assign default values/attributes
 $('#colors-js-puns').hide();
-$('#other-title').hide()
+$('#other-title').hide();
 $('#name').focus();
 $('#payment').val('credit card');
 $("#payment option[value='select_method']").attr("disabled", true);
 $('div:last-child p').hide();
 $('div:nth-last-child(2) p').hide();
-
-
-// Display 'Job Role: Other' element
-$('#title').on('change',  () => $('#title').val() === 'other' ? $('#other-title').show() : $('#other-title').hide());
 
 
 // Email validation
@@ -32,6 +28,11 @@ $('#mail').on('keyup', () => {
         $('#mail').prev().text('Please enter a valid email address:').css('color', '#e60000');
     };
 });
+
+
+// Display 'Job Role: Other' element
+$('#title').on('change',  () => $('#title').val() === 'other' ? $('#other-title').show() : $('#other-title').hide());
+
 
 
 /*===============
@@ -57,7 +58,7 @@ $("#design").on('change', () => {
         for (let i = 0; i <=5; i++){
             (i < 3) ? $(`#color :eq(${i})`).hide() : $(`#color :eq(${i})`).show();
         };
-    }
+    };
 });
 
 
@@ -91,14 +92,14 @@ const add = (cost) => {
     totalCost += cost;
     $('h3').show();
     $('#total').text(totalCost);
-}
+};
 
 // Subtract function
 const sub = (cost) => {
     totalCost -= cost;
     if (totalCost <= 0) $('h3').hide();
     $('#total').text(totalCost);
-}
+};
 
 
 /*===========
@@ -112,14 +113,13 @@ $('#payment').on('change', () => {
         $('#credit-card').show();
         $('div:last-child p').hide();
         $('div:nth-last-child(2) p').hide();
-    } 
+    };
 
     if ($('#payment').val() == 'paypal') {
         eraseCreditInfo()
         $('#credit-card').hide();
         $('div:last-child p').hide();
         $('div:nth-last-child(2) p').show();
-
     };
     
     if ($('#payment').val() == 'bitcoin'){
@@ -133,9 +133,9 @@ $('#payment').on('change', () => {
 // Erase credit card info when another payment is selected
 const eraseCreditInfo = () => {
     $('input', $('.credit-card')).each(function (){
-        $(this).val('').removeClass('redBorder').prev().removeClass('redText')
-    })
-}
+        $(this).val('').removeClass('redBorder').prev().removeClass('redText');
+    });
+};
  
 
 /*==============
@@ -159,7 +159,7 @@ $('button').on('click', (e) => {
     
   
     // Loop through activities - At least one must be checked
-    let empty = true
+    let empty = true;
     $('input[type=checkbox]:checked').each(function () { $(this).is(':checked') ? empty = false : empty = true });
     if (empty) $('.activities legend').first().addClass('redText').text('Please select at least one activity:');
 
@@ -187,20 +187,19 @@ $('button').on('click', (e) => {
             let ccvRegex = /^[0-9]{3}$/;
             if (!ccvRegex.test($('#cvv').val())) $("#cvv").addClass('redBorder').prev().addClass('redText');
         };
-    }
+    };
     
     // Submit form if there are no error messages
     $('*').each(function () {
         if ($(this).is('.redText, .redBorder')){
-            e.preventDefault();
-            
-        }
-    })
+            e.preventDefault();       
+        };
+    });
 });    
 
 
 // Reset input fields back to original styling once text is entered
-$('#name').on('change keypress', () => highlight('#name'))
+$('#name').on('change keypress', () => highlight('#name'));
 $('#mail').on('change keypress', () => highlight('#mail'));
 $('.activities').on('change', () => {$('.activities legend').first().removeClass('redText').text('Register for Activities')});
 $('#cc-num').on('change keypress', () => highlight('#cc-num'));
